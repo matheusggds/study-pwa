@@ -67,6 +67,7 @@
     var label = selected.textContent;
     app.getForecast(key, label);
     app.selectedCities.push({key: key, label: label});
+    saveSelectedCities();
     app.toggleAddDialog(false);
   });
 
@@ -102,6 +103,7 @@
       card.removeAttribute('hidden');
       app.container.appendChild(card);
       app.visibleCards[data.key] = card;
+      saveSelectedCities();
     }
     card.querySelector('.description').textContent = data.currently.summary;
     card.querySelector('.date').textContent =
@@ -176,6 +178,31 @@
     });
   };
 
-  app.updateForecastCard(injectedForecast);
+  app.init = function(){
+    window.localforage.getItem('selectedcities', function(err, cities){
+      if (cities){
+        console.log(cities);
+        app.selectedCities = cities;
+        cities.forEach(function(city){
+          app.getForecast(city.key, city.label);
+        })
+      } else {
+        app.updateForecastCard(injectedForecast);
+        app.selectedCities = [
+          {
+            key: injectedForecast.key,
+            label: injectedForecast.label
+          }
+        ];
+        saveSelectedCities();
+      }
+    })
+  };
+
+  app.init();
+
+  function saveSelectedCities(){
+    window.localforage.setItem('selectedcities', app.selectedCities);
+  }
 
 })();
