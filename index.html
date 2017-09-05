@@ -7,7 +7,15 @@
   <meta name="description" content="Weather App for UD811">
   <title>Weather</title>
   <!-- Insert link to stylesheet here -->
+  <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="styles/ud811.css">
+  <!-- Add to home screen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Weather PWA">
+  <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
+  <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#2F3BA2">
 </head>
 <body>
 
@@ -18,7 +26,9 @@
   </header>
 
   <main class="main">
-    <div class="card cardTemplate weather-forecast" hidden>
+   <div class="card cardTemplate weather-forecast" hidden>
+      <div class="city-key" hidden></div>
+      <div class="card-last-updated" hidden></div>
       <div class="location"></div>
       <div class="date"></div>
       <div class="description"></div>
@@ -30,16 +40,14 @@
           </div>
         </div>
         <div class="description">
-          <div class="feels-like">
-            <span class="value"></span><span class="scale">°F</span>
-          </div>
-          <div class="precip"></div>
           <div class="humidity"></div>
           <div class="wind">
             <span class="value"></span>
             <span class="scale">mph</span>
             <span class="direction"></span>°
           </div>
+          <div class="sunrise"></div>
+          <div class="sunset"></div>
         </div>
       </div>
       <div class="future">
