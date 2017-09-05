@@ -184,7 +184,23 @@
   // Gets a forecast for a specific city and update the card with the data
   app.getForecast = function (key, label) {
     var url = weatherAPIUrlBase + key + '.json';
+    if ('caches' in window) {
+      caches.match(url).then(function(response) {
+        if (response) {
+          response.json().then(function(json) {
+            // ONLY UPDATE IF THE HR IS STILL PENDING, OTHERWISE THE XHR HAS ALREADY RETURNED AND PROVIDED THE LATEST DATA
+            if (app.hasRequestPending){
+              console.log('updated from cache');
+              json.key = key;
+              json.label = label;
+              app.updateForecastCard(json);
+            }
+          })
+        }
+      })
+    }
     // Make the XHR to get the data, then update the card
+    app.hasRequestPending = true;
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
       if (request.readyState === XMLHttpRequest.DONE) {
@@ -203,6 +219,7 @@
   // Iterate all of the cards and attempt to get the latest forecast data
   app.updateForecasts = function () {
     var keys = Object.keys(app.visibleCards);
+    // console.log('keys: ' + keys);
     keys.forEach(function (key) {
       app.getForecast(key);
     });
@@ -212,7 +229,7 @@
 
     window.localforage.getItem('selectedcities', function (err, cities) {
       if (cities) {
-        console.log(cities);
+        // console.log(cities);
         app.selectedCities = cities;
         cities.forEach(function (city) {
           app.getForecast(city.key, city.label);
@@ -229,14 +246,14 @@
   })
 
   if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .then(
-          function(registration) {
-            console.log('Service worker registered');
-          }
-        );
-    }
+    navigator.serviceWorker
+      .register('./sw.js')
+      .then(
+        function (registration) {
+          console.log('Service worker registered');
+        }
+      );
+  }
 
   function saveSelectedCities() {
     window.localforage.setItem('selectedcities', app.selectedCities);
