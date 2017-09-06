@@ -153,15 +153,14 @@
     if ('caches' in window) {
       caches.match(url).then(function (response) {
         if (response) {
+          console.log(label + ' no cache.')
           response.json().then(function (json) {
             // ONLY UPDATE IF THE HR IS STILL PENDING, OTHERWISE THE XHR HAS ALREADY RETURNED AND PROVIDED THE LATEST DATA
-            if (app.hasRequestPending) {
               var results = json.query.results;
               results.key = key;
               results.label = label;
               results.created = json.query.created;
               app.updateForecastCard(results);
-            }
           })
         }
       })
@@ -177,10 +176,9 @@
           results.label = label;
           results.created = response.query.created;
           app.updateForecastCard(results);
+        } else {
+          console.log('XHR failed.')
         }
-      } else {
-        // Return the initial weather forecast since no data is available.
-        app.updateForecastCard(initialWeatherForecast);
       }
     };
     request.open('GET', url);
