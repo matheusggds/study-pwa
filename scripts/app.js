@@ -147,7 +147,7 @@
   // Gets a forecast for a specific city and update the card with the data
   app.getForecast = function (key, label) {
     var statement = 'select * from weather.forecast where woeid=' + key;
-    var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' +
+    var url = 'https://query.yahooapis.com/v1/public/yql?format=json&u=c&q=' +
       statement;
 
     if ('caches' in window) {
