@@ -43,7 +43,7 @@
       key: key,
       label: label
     });
-    saveSelectedCities();
+    cacheSelectedCities();
     app.toggleAddDialog(false);
   });
 
@@ -198,18 +198,20 @@
     window.localforage.getItem('selectedcities', function (err, cities) {
       if (cities) {
         // console.log(cities);
+        removeEntrytext();
         app.selectedCities = cities;
         cities.forEach(function (city) {
           app.getForecast(city.key, city.label);
         })
-      } else {
-        app.updateForecastCard(initialWeatherForecast);
-        app.selectedCities = [{
-          key: initialWeatherForecast.key,
-          label: initialWeatherForecast.label
-        }];
-        saveSelectedCities();
-      }
+      } 
+      // else {
+      //   app.updateForecastCard(initialWeatherForecast);
+      //   app.selectedCities = [{
+      //     key: initialWeatherForecast.key,
+      //     label: initialWeatherForecast.label
+      //   }];
+      //   cacheSelectedCities();
+      // }
     })
   })
 
@@ -223,8 +225,13 @@
       );
   }
 
-  function saveSelectedCities() {
+  function cacheSelectedCities() {
+    removeEntrytext()
     window.localforage.setItem('selectedcities', app.selectedCities);
+  }
+
+  function removeEntrytext(){
+    document.querySelector('.entry-text').setAttribute('hidden', true);
   }
 
 
