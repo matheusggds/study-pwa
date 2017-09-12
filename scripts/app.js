@@ -217,12 +217,16 @@
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-      .register('./sw.js')
+      .register('./service-worker.js')
       .then(
         function (registration) {
-          console.log('Service worker registered');
+          console.log('********* Service worker registered *********')
         }
-      );
+      ).catch(function(response) {
+        console.log('********* Não foi possivel registrar o ServiceWorker *********')
+      });
+  } else {
+    console.log('********* Não suporta service workers *********')
   }
 
   function cacheSelectedCities() {
