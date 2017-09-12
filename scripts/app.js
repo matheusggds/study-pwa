@@ -1,8 +1,6 @@
 (function () {
   'use strict';
 
-  var weatherAPIUrlBase = 'https://publicdata-weather.firebaseio.com/';
-
   var app = {
     isLoading: true,
     visibleCards: {},
