@@ -5,6 +5,7 @@ gulp.task('generate-sw', function() {
   var swOptions = {
     staticFileGlobs: [
       'index.html',
+      '/index.html',
       'images/*.{png,svg,gif,jpg}',
       'scripts/*.js',
       'styles/*.css'
