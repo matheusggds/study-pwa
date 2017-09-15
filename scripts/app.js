@@ -85,11 +85,10 @@
       app.container.appendChild(card);
       app.visibleCards[data.key] = card;
     }
-
     // Verifies the data provide is newer than what's already visible
     // on the card, if it's not bail, if it is, continue and update the
     // time saved in the card
-    var cardLastUpdatedElem = card.querySelector('.card-last-updated');
+    var cardLastUpdatedElem = card.querySelector('.last-atted small');
     var cardLastUpdated = cardLastUpdatedElem.textContent;
     if (cardLastUpdated) {
       cardLastUpdated = new Date(cardLastUpdated);
@@ -98,7 +97,7 @@
         return;
       }
     }
-    cardLastUpdatedElem.textContent = data.created;
+    cardLastUpdatedElem.textContent = 'Atualizado as: ' + dataLastUpdated.getHours() + ':' + dataLastUpdated.getMinutes() + ':' + dataLastUpdated.getSeconds();
 
     card.querySelector('.description').textContent = current.text;
     card.querySelector('.date').textContent = current.date;
@@ -144,7 +143,7 @@
 
   // Gets a forecast for a specific city and update the card with the data
   app.getForecast = function (key, label) {
-    var statement = 'select * from weather.forecast where woeid=' + key;
+    var statement = 'select * from weather.forecast where woeid=' + key + ' and u="c"';
     var url = 'https://query.yahooapis.com/v1/public/yql?format=json&u=c&q=' +
       statement;
 
